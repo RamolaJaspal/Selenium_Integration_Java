@@ -1,4 +1,4 @@
-package com.qainfotech.com.ImageAccessibility;
+package com.qainfotech.ImageAccessibility;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,9 +28,9 @@ public class ImageWebdriver extends ChromeDriver {
 
 	public boolean is_Alt_Text_Relvant(WebElement element) {
 
-		String src_url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png";// element.getAttribute("src");
-		String alt_text = "Hello";// element.getAttribute("alt");
-		String vicinityText = "Bye";// element.findElement(By.xpath("../..")).getText();
+		String src_url =element.getAttribute("src");
+		String alt_text =element.getAttribute("alt");
+		String vicinityText =element.findElement(By.xpath("../..")).getText();
 		String filename = null;
 		OkHttpClient client = new OkHttpClient();
 		try {
