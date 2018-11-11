@@ -1,6 +1,7 @@
 package com.qainfotech.ImageAccessibility;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +16,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
+import Report.TableBuilder;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -25,7 +32,48 @@ import okhttp3.Response;
 
 public class ImageWebdriver extends ChromeDriver {
 	private String Server_URL = "http://localhost:5000/api/upload_image_get_relevancy";
-
+	Document document = new Document();
+    PdfPTable  Table= null;
+ 
+    public ImageWebdriver() {
+    	document.setPageSize(PageSize.A4);
+    	try {
+			Table= TableBuilder.createTable();
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	try {
+			PdfWriter.getInstance(document, new FileOutputStream("Simple.pdf"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        document.open();
+    }
+		
+    	public void close() {
+    		try {
+    			document.add(Table);
+    		} catch (DocumentException e) {
+    			e.printStackTrace();
+    		}
+            document.close();
+            System.out.println( "PDF report Created!" );
+            super.close();
+            
+            File dir=new File("Images");
+            for(File file: dir.listFiles())
+            {
+                if (!file.isDirectory() && !file.getName().contains("gitkeep")) { 
+                    file.delete();
+                }
+    	}
+    	}
+	
 	public boolean is_Alt_Text_Relvant(WebElement element) {
 
 		String src_url =element.getAttribute("src");
@@ -62,8 +110,9 @@ public class ImageWebdriver extends ChromeDriver {
 			    }
 			    System.out.println(Possible_texts);
 			    System.out.println(texts);
+			    System.out.println("adding a new row");
+			    TableBuilder.addNewRow(Table,"Images/" + filename,alt_text,result,Possible_texts.replace("::","\n"));
 			    
-			    file.delete();
 			    if(result.contains("RED"))
 			    {   
 			    	System.out.println("Expected text classes\t"+texts+ " to be in Possible texts"+Possible_texts );
@@ -73,6 +122,7 @@ public class ImageWebdriver extends ChromeDriver {
 			    {
 			    	return true;
 			    }
+			    
 		}
 
 		catch (Exception e) {
