@@ -20,7 +20,7 @@ public class DummyTest {
 
 	@BeforeSuite
 	public void setUp() throws Exception {
-		driver.get("http://127.0.0.1:8080");
+		driver.get("https://www.stuartweitzman.com/womens-shoes/new-arrivals/");
 		wait=new WebDriverWait(driver,10);
 	}
 	
@@ -29,28 +29,15 @@ public class DummyTest {
 
 	@Test
 	public void test() throws Exception {
-		By ImageLocator=By.xpath("/html/body/div/div/div[2]/div[1]/div[1]/img");
-		
-		wait.until(ExpectedConditions.visibilityOfElementLocated(ImageLocator));
-		WebElement element = driver.findElement(ImageLocator);
-		
-		Assert.assertTrue(driver.is_Alt_Text_Relvant(element));
-		
-		ImageLocator=By.xpath("/html/body/div/div/div[2]/div/div[2]/img[2]");
-		
-		wait.until(ExpectedConditions.visibilityOfElementLocated(ImageLocator));
-		element = driver.findElement(ImageLocator);
-		
-		Assert.assertTrue(driver.is_Alt_Text_Relvant(element));
-		
-		ImageLocator=By.xpath("//*[@id=\"phone\"]");
-		
-		wait.until(ExpectedConditions.visibilityOfElementLocated(ImageLocator));
-		element = driver.findElement(ImageLocator);
-		
-		Assert.assertTrue(driver.is_Alt_Text_Relvant(element));
-		
-		
+		By Imaglocator=By.xpath("//*[@id=\"itemContainer\"]/div[3]/div[3]/div[2]/ul/li[2]/a/img");
+		try 
+		{
+			driver.is_Alt_Text_Relvant(driver.findElement(Imaglocator));
+		}
+		catch(AssertionError e)
+		{
+			System.out.println("Alt text relevancy tect failed");
+		}
 	}
 
 
