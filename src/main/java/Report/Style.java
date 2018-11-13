@@ -36,7 +36,6 @@ public class Style {
         cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
         
         // border
-        cell.setBorder(0);
         cell.setBorderColorBottom(BaseColor.GRAY);
         cell.setBorderColorTop(BaseColor.GRAY);
         cell.setBorderColorRight(BaseColor.GRAY);

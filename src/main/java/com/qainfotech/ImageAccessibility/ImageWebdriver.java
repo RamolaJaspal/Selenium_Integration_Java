@@ -115,16 +115,19 @@ public class ImageWebdriver extends ChromeDriver {
 			    	TempObj=possible_classes.get(i).getAsJsonObject();
 			    	Possible_texts=Possible_texts+"::"+TempObj.get("Entity").getAsString();
 			    }
-			    System.out.println("\n================Image Indentification Result====================\n"+Possible_texts+"\n+++++++++Text classes in alt text ++++++++\n"+texts+"\n===================================");
+			    System.out.println("------------------------Result for Image::"+src_url+"-----------------------");
+			    System.out.println("\n================Image Indentification Result====================\n\t"+Possible_texts.replace("::","\n\t")+"\n+++++++++Text classes Results ++++++++\n\t"+texts.replace("::","\n\t")+"\n=======================================================");
 			    TableBuilder.addNewRow(Table,"Images/" + filename,alt_text,result,Possible_texts.replace("::","\n"));
 			    
 			    if(result.contains("RED"))
 			    {   
-			    	System.out.println("Expected text classes\t"+texts+ " to be in Possible texts"+Possible_texts );
+			    	//System.out.println("Expected text classes\t"+texts+ " to be in Possible texts"+Possible_texts );
+			    	System.out.println("\nFAIL\n");
 			    	return false;
 			    }
 			    else
-			    {
+			    {   
+			    	System.out.println("\nPASS\n");
 			    	return true;
 			    }
 			    
@@ -177,11 +180,13 @@ public class ImageWebdriver extends ChromeDriver {
 			    file.delete();
 			    if(result.contains("RED"))
 			    {   
-			    	System.out.println("\t\t\t\t\tExpected text classes\t"+texts+ "to be in Possible texts"+Possible_texts );
+			    	//System.out.println("\t\t\t\t\tExpected text classes\t"+texts+ "to be in Possible texts"+Possible_texts );
+			    	System.out.println("\nFAIL\n");
 			    	return false;
 			    }
 			    else
-			    {
+			    {   
+			    	System.out.println("\nPASS\n");
 			    	return true;
 			    }
 			    

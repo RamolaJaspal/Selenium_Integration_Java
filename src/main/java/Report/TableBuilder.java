@@ -66,6 +66,7 @@ public class TableBuilder {
     	Font font = new Font(FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
     	PdfPCell cell = new PdfPCell(new Phrase(text,font));
     	Style.labelCellStyle(cell);
+    	cell.setBorder(1);
         return cell;
     }
     
@@ -90,7 +91,7 @@ public class TableBuilder {
     
     
     public static void addNewRow(PdfPTable table,String ImagePath,String Alt,String relevancy,String Recommandation) {
-    	System.out.println("Trying to add the row"+ImagePath);
+//    	System.out.println("Trying to add the row"+ImagePath);
     	try {
 			table.addCell(Image.getInstance(ImagePath));
 		} catch (BadElementException e) {
