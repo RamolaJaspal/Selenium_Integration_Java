@@ -24,20 +24,15 @@ public class DummyTest {
 		wait=new WebDriverWait(driver,10);
 	}
 	
-	
-	
-
 	@Test
-	public void test() throws Exception {
+	public void test_1() {
 		By Imaglocator=By.xpath("//*[@id=\"itemContainer\"]/div[3]/div[3]/div[2]/ul/li[2]/a/img");
-		try 
-		{
-			driver.is_Alt_Text_Relvant(driver.findElement(Imaglocator));
-		}
-		catch(AssertionError e)
-		{
-			System.out.println("Alt text relevancy tect failed");
-		}
+		Assert.assertTrue(driver.is_Alt_Text_Relvant(driver.findElement(Imaglocator)));
+	}
+	@Test
+	public void test_2() {
+		By Imaglocator=By.xpath("//*[@id=\"itemContainer\"]/div[2]/div[1]/ul/div/div/li[1]/a/img");
+		Assert.assertTrue(driver.is_Alt_Text_Relvant(driver.findElement(Imaglocator)));
 	}
 
 

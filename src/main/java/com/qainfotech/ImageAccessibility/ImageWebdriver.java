@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -21,6 +22,7 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+
 
 import Report.TableBuilder;
 import okhttp3.MediaType;
@@ -44,7 +46,7 @@ public class ImageWebdriver extends ChromeDriver {
 			e.printStackTrace();
 		}
     	try {
-			PdfWriter.getInstance(document, new FileOutputStream("Simple.pdf"));
+			PdfWriter.getInstance(document, new FileOutputStream("Report.pdf"));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -62,7 +64,7 @@ public class ImageWebdriver extends ChromeDriver {
     			e.printStackTrace();
     		}
             document.close();
-            System.out.println( "PDF report Created!" );
+            System.out.println( "PDF report Created! in src folder Report.pdf" );
             super.close();
             
             File dir=new File("Images");
@@ -80,7 +82,12 @@ public class ImageWebdriver extends ChromeDriver {
 		String alt_text =element.getAttribute("alt");
 		String vicinityText =element.findElement(By.xpath("../..")).getText();
 		String filename = null;
-		OkHttpClient client = new OkHttpClient();
+		OkHttpClient client = new OkHttpClient().newBuilder()  
+		        .connectTimeout(1, TimeUnit.MINUTES)
+		        .readTimeout(30, TimeUnit.SECONDS)
+		        .writeTimeout(15, TimeUnit.SECONDS)
+		        .build();
+		
 		try {
 			filename = this.saveImage(src_url);
 			File file = new File("Images/" + filename);
@@ -108,9 +115,7 @@ public class ImageWebdriver extends ChromeDriver {
 			    	TempObj=possible_classes.get(i).getAsJsonObject();
 			    	Possible_texts=Possible_texts+"::"+TempObj.get("Entity").getAsString();
 			    }
-			    System.out.println(Possible_texts);
-			    System.out.println(texts);
-			    System.out.println("adding a new row");
+			    System.out.println("\n================Image Indentification Result====================\n"+Possible_texts+"\n+++++++++Text classes in alt text ++++++++\n"+texts+"\n===================================");
 			    TableBuilder.addNewRow(Table,"Images/" + filename,alt_text,result,Possible_texts.replace("::","\n"));
 			    
 			    if(result.contains("RED"))
@@ -126,7 +131,7 @@ public class ImageWebdriver extends ChromeDriver {
 		}
 
 		catch (Exception e) {
-			System.out.println("Exception occured");
+			System.out.println("============Exception occured==============");
 			e.printStackTrace();
 		}
 	
@@ -172,7 +177,7 @@ public class ImageWebdriver extends ChromeDriver {
 			    file.delete();
 			    if(result.contains("RED"))
 			    {   
-			    	System.out.println("Expected text classes\t"+texts+ "to be in Possible texts"+Possible_texts );
+			    	System.out.println("\t\t\t\t\tExpected text classes\t"+texts+ "to be in Possible texts"+Possible_texts );
 			    	return false;
 			    }
 			    else
@@ -183,7 +188,7 @@ public class ImageWebdriver extends ChromeDriver {
 		}
 
 		catch (Exception e) {
-			System.out.println("Exception occured in finding out the relvancy in Image");
+			System.out.println("======================Exception occured in finding out the relvancy in Image=================");
 			e.printStackTrace();
 		}
 		return false;
